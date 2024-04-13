@@ -1,0 +1,178 @@
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JRadioButton;
+import javax.swing.JCheckBox;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.awt.event.ActionEvent;
+
+public class Pizza_order extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JTextField textField;
+	private JTextField textField_1;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Pizza_order frame = new Pizza_order();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Pizza_order() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 381);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel(" crust");
+		lblNewLabel.setBounds(10, 11, 46, 14);
+		contentPane.add(lblNewLabel);
+		
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("Regular Crust");
+		rdbtnNewRadioButton.setBounds(6, 30, 109, 23);
+		contentPane.add(rdbtnNewRadioButton);
+		
+		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Thin Crust");
+		rdbtnNewRadioButton_1.setBounds(6, 67, 109, 23);
+		contentPane.add(rdbtnNewRadioButton_1);
+		
+		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Hand tossed crust");
+		rdbtnNewRadioButton_2.setBounds(6, 107, 113, 23);
+		contentPane.add(rdbtnNewRadioButton_2);
+		
+		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("Deep-Dish Crust");
+		rdbtnNewRadioButton_3.setBounds(6, 141, 109, 23);
+		contentPane.add(rdbtnNewRadioButton_3);
+		
+		JLabel lblNewLabel_1 = new JLabel("Toppings");
+		lblNewLabel_1.setBounds(159, 11, 77, 14);
+		contentPane.add(lblNewLabel_1);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Pepperoni");
+		chckbxNewCheckBox.setBounds(159, 30, 97, 23);
+		contentPane.add(chckbxNewCheckBox);
+		
+		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("Sausage");
+		chckbxNewCheckBox_1.setBounds(159, 67, 97, 23);
+		contentPane.add(chckbxNewCheckBox_1);
+		
+		JCheckBox chckbxNewCheckBox_2 = new JCheckBox("Extra Cheese");
+		chckbxNewCheckBox_2.setBounds(159, 107, 97, 23);
+		contentPane.add(chckbxNewCheckBox_2);
+		
+		JCheckBox chckbxNewCheckBox_3 = new JCheckBox("Onions");
+		chckbxNewCheckBox_3.setBounds(159, 141, 97, 23);
+		contentPane.add(chckbxNewCheckBox_3);
+		
+		JCheckBox chckbxNewCheckBox_4 = new JCheckBox("Mushrooms");
+		chckbxNewCheckBox_4.setBounds(159, 182, 97, 23);
+		contentPane.add(chckbxNewCheckBox_4);
+		
+		JLabel lblNewLabel_2 = new JLabel("Sides");
+		lblNewLabel_2.setBounds(313, 11, 77, 14);
+		contentPane.add(lblNewLabel_2);
+		
+		JCheckBox chckbxNewCheckBox_5 = new JCheckBox("Bread Sticks");
+		chckbxNewCheckBox_5.setBounds(305, 43, 97, 23);
+		contentPane.add(chckbxNewCheckBox_5);
+		
+		JCheckBox chckbxNewCheckBox_6 = new JCheckBox("Buffalo Wings");
+		chckbxNewCheckBox_6.setBounds(305, 88, 97, 23);
+		contentPane.add(chckbxNewCheckBox_6);
+		
+		JLabel lblNewLabel_3 = new JLabel("Deliver to:");
+		lblNewLabel_3.setBounds(10, 212, 58, 14);
+		contentPane.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("Name");
+		lblNewLabel_4.setBounds(10, 233, 46, 14);
+		contentPane.add(lblNewLabel_4);
+		
+		JLabel lblNewLabel_5 = new JLabel("Address");
+		lblNewLabel_5.setBounds(10, 264, 46, 14);
+		contentPane.add(lblNewLabel_5);
+		
+		textField = new JTextField();
+		textField.setBounds(62, 261, 351, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(64, 230, 349, 20);
+		contentPane.add(textField_1);
+		textField_1.setColumns(10);
+		
+		JButton btnNewButton = new JButton("Place order");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+					Connection con=DriverManager.getConnection("jdbc:mysql;//localhost:3306/Pizza_order,"root","Jatin@26");
+					String query="insert into Pizza_online_order values(?,?,?,?,?)";
+					PreparedStatement ps=con.prepareStatement(query);
+					ps.setString(1, txtName.getText());
+					ps.setString(2, txtaddr.getText());
+					if(rbtnNewRadioButton.isSelected()) {
+						crust = "regular Crust";
+					} else if(rbtnNewRadioButton_1.isSelected()) {
+						crust = "Thin Crust";
+					} else if(rbtnNewRadioButton_2.isSelected()) {
+						crust = "Hand tossed crust";
+					} else if(rbtnNewRadioButton_3.isSelected()) {
+						crust = "Deep_Dish crust";
+					} String toppings = "";
+	                // Assuming only one topping can be selected
+	                if (chckbxNewCheckBox.isSelected()) {
+	                    toppings = "Pepperoni";
+	                } else if (chckbxNewCheckBox_1.isSelected()) {
+	                    toppings = "Sausage";
+	                } else if (chckbxNewCheckBox_2.isSelected()) {
+	                	toppings = "Extra cheese";
+	                } else if (chckbxNewCheckBox_3.isSelected()) {
+	                	toppings = "Onions";
+	                }else if (chckbxNewCheckBox_4.isSelected()) {
+	                	toppings = "Mushrooms";
+	                }
+	                if (chckbxNewCheckBox_5.isSelected()) {
+	                    sidesBuilder.append("Bread Sticks, ");
+	                }
+	                if (chckbxNewCheckBox_6.isSelected()) {
+	                    sidesBuilder.append("Buffalo Wings, ");
+	                }
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		btnNewButton.setBounds(175, 294, 103, 23);
+		contentPane.add(btnNewButton);
+	}
+}
