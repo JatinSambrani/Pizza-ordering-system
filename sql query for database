@@ -1,0 +1,8 @@
+Create database Pizza_order;
+use pizza_order;
+create table Pizza_online_order(Name varchar(20),address varchar(20),crust char(10),toppings char(10),sides int);
+desc Pizza_online_order;
+ALTER TABLE Pizza_online_order MODIFY COLUMN crust VARCHAR(50);
+ALTER TABLE Pizza_online_order MODIFY COLUMN toppings VARCHAR(100);
+ALTER TABLE Pizza_online_order MODIFY COLUMN sides VARCHAR(255);
+select * from Pizza_online_order
