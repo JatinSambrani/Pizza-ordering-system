@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
@@ -50,9 +51,9 @@ public class Pizza_order extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel(" crust");
-		lblNewLabel.setBounds(10, 11, 46, 14);
-		contentPane.add(lblNewLabel);
+		JLabel Label = new JLabel(" crust");
+		Label.setBounds(10, 11, 46, 14);
+		contentPane.add(Label);
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Regular Crust");
 		rdbtnNewRadioButton.setBounds(6, 30, 109, 23);
@@ -70,9 +71,9 @@ public class Pizza_order extends JFrame {
 		rdbtnNewRadioButton_3.setBounds(6, 141, 109, 23);
 		contentPane.add(rdbtnNewRadioButton_3);
 		
-		JLabel lblNewLabel_1 = new JLabel("Toppings");
-		lblNewLabel_1.setBounds(159, 11, 77, 14);
-		contentPane.add(lblNewLabel_1);
+		JLabel Label_1 = new JLabel("Toppings");
+		Label_1.setBounds(159, 11, 77, 14);
+		contentPane.add(Label_1);
 		
 		JCheckBox chckbxNewCheckBox = new JCheckBox("Pepperoni");
 		chckbxNewCheckBox.setBounds(159, 30, 97, 23);
@@ -106,17 +107,17 @@ public class Pizza_order extends JFrame {
 		chckbxNewCheckBox_6.setBounds(305, 88, 97, 23);
 		contentPane.add(chckbxNewCheckBox_6);
 		
-		JLabel lblNewLabel_3 = new JLabel("Deliver to:");
-		lblNewLabel_3.setBounds(10, 212, 58, 14);
-		contentPane.add(lblNewLabel_3);
+		JLabel Label_3 = new JLabel("Deliver to:");
+		Label_3.setBounds(10, 212, 58, 14);
+		contentPane.add(Label_3);
 		
-		JLabel lblNewLabel_4 = new JLabel("Name");
-		lblNewLabel_4.setBounds(10, 233, 46, 14);
-		contentPane.add(lblNewLabel_4);
+		JLabel Label_4 = new JLabel("Name");
+		Label_4.setBounds(10, 233, 46, 14);
+		contentPane.add(Label_4);
 		
-		JLabel lblNewLabel_5 = new JLabel("Address");
-		lblNewLabel_5.setBounds(10, 264, 46, 14);
-		contentPane.add(lblNewLabel_5);
+		JLabel Label_5 = new JLabel("Address");
+		Label_5.setBounds(10, 264, 46, 14);
+		contentPane.add(Label_5);
 		
 		textField = new JTextField();
 		textField.setBounds(62, 261, 351, 20);
@@ -133,38 +134,43 @@ public class Pizza_order extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Class.forName("com.mysql.cj.jdbc.Driver");
-					Connection con=DriverManager.getConnection("jdbc:mysql;//localhost:3306/Pizza_order,"root","Jatin@26");
-					String query="insert into Pizza_online_order values(?,?,?,?,?)";
+					Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/Pizza_order","root","Jatin@26");
+					String query = "insert into Pizza_online_order values(?,?,?,?,?)";
 					PreparedStatement ps=con.prepareStatement(query);
-					ps.setString(1, txtName.getText());
-					ps.setString(2, txtaddr.getText());
-					if(rbtnNewRadioButton.isSelected()) {
-						crust = "regular Crust";
-					} else if(rbtnNewRadioButton_1.isSelected()) {
-						crust = "Thin Crust";
-					} else if(rbtnNewRadioButton_2.isSelected()) {
-						crust = "Hand tossed crust";
-					} else if(rbtnNewRadioButton_3.isSelected()) {
-						crust = "Deep_Dish crust";
-					} String toppings = "";
+					ps.setString(1, textField.getText());
+					ps.setString(2, textField_1.getText());
+					if(rdbtnNewRadioButton.isSelected()) {
+						ps.setString(3, rdbtnNewRadioButton.getText());
+					} else if(rdbtnNewRadioButton_1.isSelected()) {
+						ps.setString(3, rdbtnNewRadioButton_1.getText());
+					} else if(rdbtnNewRadioButton_2.isSelected()) {
+						ps.setString(3, rdbtnNewRadioButton_2.getText());
+					} else if(rdbtnNewRadioButton_3.isSelected()) {
+						ps.setString(3, rdbtnNewRadioButton_3.getText());
+					}
 	                // Assuming only one topping can be selected
 	                if (chckbxNewCheckBox.isSelected()) {
-	                    toppings = "Pepperoni";
+	                    	ps.setString(4, chckbxNewCheckBox.getText());
 	                } else if (chckbxNewCheckBox_1.isSelected()) {
-	                    toppings = "Sausage";
+	                    	ps.setString(4, chckbxNewCheckBox_1.getText());
 	                } else if (chckbxNewCheckBox_2.isSelected()) {
-	                	toppings = "Extra cheese";
+	                    	ps.setString(4, chckbxNewCheckBox_2.getText());
 	                } else if (chckbxNewCheckBox_3.isSelected()) {
-	                	toppings = "Onions";
+	                    	ps.setString(4, chckbxNewCheckBox_3.getText());
 	                }else if (chckbxNewCheckBox_4.isSelected()) {
-	                	toppings = "Mushrooms";
+	                	ps.setString(4, chckbxNewCheckBox_4.getText());
 	                }
 	                if (chckbxNewCheckBox_5.isSelected()) {
-	                    sidesBuilder.append("Bread Sticks, ");
+	                    ps.setString(5, chckbxNewCheckBox_5.getText());
 	                }
 	                if (chckbxNewCheckBox_6.isSelected()) {
-	                    sidesBuilder.append("Buffalo Wings, ");
+	                    ps.setString(5, chckbxNewCheckBox_6.getText());
 	                }
+	                int i=ps.executeUpdate();
+	                 JOptionPane.showMessageDialog(btnNewButton, i+"Record added sucessfully!");
+	                 ps.close();
+	                 con.close();
+			
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
